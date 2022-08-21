@@ -9,7 +9,7 @@
     "dev": "nodemon index.js",
     "build:ui": "rm -rf build && cd ../fullstack-part2/phonebook/ && npm run build && cp -r build ../../fullstack-part3",
     "deploy": "git push heroku main",
-    "deploy:full": "npm run build:ui git add . && git commit -m uibuild && npm run deploy",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
     "logs:prod": "heroku logs --tail",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,7 +26,9 @@
   "homepage": "https://github.com/arnay07/fullstack-part3#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "mongoose": "^6.5.2",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
