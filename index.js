@@ -1,8 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import 'dotenv/config';
 import PersonController from './controllers/PersonController.js';
+import logger from './utils/logger.js';
+import config from './utils/config.js';
 
 const app = express();
 app.use(express.json());
@@ -54,7 +55,6 @@ const errorHandler = (error, req, res, next) => {
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`);
 });

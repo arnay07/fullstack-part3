@@ -1,13 +1,12 @@
 import mongoose from 'mongoose';
+import config from '../utils/config.js';
 
 const Schema = mongoose.Schema;
 
-const url = process.env.MONGODB_URI;
-
-console.log('connecting to', url);
+console.log('connecting to', config.MONGODB_URI);
 
 mongoose
-  .connect(url)
+  .connect(config.MONGODB_URI)
   .then((result) => {
     console.log('connected to MongoDB');
   })
