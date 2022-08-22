@@ -12,7 +12,7 @@ const deletePerson = (id) => {
   return Person.findByIdAndDelete(id);
 };
 
-const addPerson = (person) => {
+const createPerson = (person) => {
   return Person.create(person);
 };
 
@@ -24,6 +24,6 @@ export default {
   getPersons,
   getPersonById,
   deletePerson,
-  addPerson,
+  createPerson,
   updatePerson,
 };

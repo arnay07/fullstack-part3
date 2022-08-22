@@ -2,8 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import 'dotenv/config';
-import mongoose from 'mongoose';
-import PersonRoutes from './routers/PersonRoutes.js';
+import PersonController from './controllers/PersonController.js';
 
 const app = express();
 app.use(express.json());
@@ -26,20 +25,33 @@ morgan.token('payload', (req) => {
 
 app.use(morgan(':method :url :status :response-time ms :payload'));
 
-const url = process.env.MONGODB_URI;
+app.get('/api/persons', PersonController.getPersons);
 
-console.log('connecting to', url);
+app.get('/info', PersonController.getInfo);
 
-mongoose
-  .connect(url)
-  .then((result) => {
-    console.log('connected to MongoDB');
-  })
-  .catch((error) => {
-    console.log('error connecting to MongoDB:', error.message);
-  });
+app.get('/api/persons/:id', PersonController.getPersonById);
 
-app.use('/api/persons', PersonRoutes);
+app.delete('/api/persons/:id', PersonController.deletePerson);
+
+app.post('/api/persons', PersonController.createPerson);
+
+app.put('/api/persons/:id', PersonController.updatePerson);
+
+const unknownEndpoint = (req, response) => {
+  response.status(404).send({ error: 'unknown endpoint' });
+};
+
+app.use(unknownEndpoint);
+
+const errorHandler = (error, request, response, next) => {
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' });
+  }
+
+  next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
