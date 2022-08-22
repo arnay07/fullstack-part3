@@ -17,7 +17,11 @@ const createPerson = (person) => {
 };
 
 const updatePerson = (id, person) => {
-  return Person.findByIdAndUpdate(id, person, { new: true });
+  return Person.findByIdAndUpdate(id, person, {
+    new: true,
+    runValidators: true,
+    context: 'query',
+  });
 };
 
 export default {

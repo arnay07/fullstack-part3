@@ -1,39 +1,36 @@
 import PersonService from '../services/PersonService.js';
-import mongoose from 'mongoose';
 
-const getPersons = (req, res) => {
+const getPersons = (req, res, next) => {
   PersonService.getPersons()
     .then((persons) => {
       res.json({ data: persons, status: 'success' });
     })
-    .catch((error) =>
-      res.status(500).json({ error: error.message, status: 'error' })
-    );
+    .catch((error) => next(error));
 };
 
-const getPersonById = (req, res) => {
-  const id = mongoose.Types.ObjectId(req.params.id);
+const getPersonById = (req, res, next) => {
+  const id = req.params.id;
   PersonService.getPersonById(id)
     .then((person) => {
-      res.json({ data: person, status: 'success' });
+      if (person) {
+        res.json({ data: person, status: 'success' });
+      } else {
+        res.status(404).json({ error: 'person not found', status: 'error' });
+      }
     })
-    .catch((error) =>
-      res.status(500).json({ error: error.message, status: 'error' })
-    );
+    .catch((error) => next(error));
 };
 
-const deletePerson = (req, res) => {
-  const id = mongoose.Types.ObjectId(req.params.id);
+const deletePerson = (req, res, next) => {
+  const id = req.params.id;
   PersonService.deletePerson(id)
     .then((person) => {
       res.json({ data: person, status: 'success' });
     })
-    .catch((error) =>
-      res.status(500).json({ error: error.message, status: 'error' })
-    );
+    .catch((error) => next(error));
 };
 
-const createPerson = (req, res) => {
+const createPerson = (req, res, next) => {
   const body = req.body;
   const person = {
     name: body.name,
@@ -43,13 +40,11 @@ const createPerson = (req, res) => {
     .then((savedPerson) => {
       res.json({ data: savedPerson, status: 'success' });
     })
-    .catch((error) =>
-      res.status(500).json({ error: error.message, status: 'error' })
-    );
+    .catch((error) => next(error));
 };
 
-const updatePerson = (req, res) => {
-  const id = mongoose.Types.ObjectId(req.params.id);
+const updatePerson = (req, res, next) => {
+  const id = req.params.id;
   const body = req.body;
   const person = {
     name: body.name,
@@ -59,23 +54,23 @@ const updatePerson = (req, res) => {
     .then((updatedPerson) => {
       res.json({ data: updatedPerson, status: 'success' });
     })
-    .catch((error) =>
-      res.status(500).json({ error: error.message, status: 'error' })
-    );
+    .catch((error) => next(error));
 };
 
-const getInfo = (req, res) => {
+const getInfo = (req, res, next) => {
   const date = new Date();
   const time = date.toLocaleTimeString();
   const dateString = date.toDateString();
-  PersonService.getPersons().then((persons) => {
-    res.send(
-      `
+  PersonService.getPersons()
+    .then((persons) => {
+      res.send(
+        `
         <p>Phonebook has info for ${persons.length} people</p>
         <p>${dateString} ${time}</p>
         `
-    );
-  });
+      );
+    })
+    .catch((error) => next(error));
 };
 
 export default {
