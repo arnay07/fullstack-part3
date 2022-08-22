@@ -25,6 +25,12 @@ const personSchema = new Schema({
     type: String,
     required: true,
     minLength: 8,
+    validate: {
+      validator: (n) => {
+        return /\d{2}-\d+/.test(n) || /\d{3}-\d+/.test(n);
+      },
+      message: (props) => `${props.value} is not a valid phone number`,
+    },
   },
 });
 
