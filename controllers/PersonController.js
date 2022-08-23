@@ -1,7 +1,13 @@
-import PersonService from '../services/PersonService.js';
+const {
+  getPersons: _getPersons,
+  getPersonById: _getPersonById,
+  deletePerson: _deletePerson,
+  createPerson: _createPerson,
+  updatePerson: _updatePerson,
+} = require('../services/PersonService');
 
 const getPersons = (req, res, next) => {
-  PersonService.getPersons()
+  _getPersons()
     .then((persons) => {
       res.json({ data: persons, status: 'success' });
     })
@@ -10,7 +16,7 @@ const getPersons = (req, res, next) => {
 
 const getPersonById = (req, res, next) => {
   const id = req.params.id;
-  PersonService.getPersonById(id)
+  _getPersonById(id)
     .then((person) => {
       if (person) {
         res.json({ data: person, status: 'success' });
@@ -23,7 +29,7 @@ const getPersonById = (req, res, next) => {
 
 const deletePerson = (req, res, next) => {
   const id = req.params.id;
-  PersonService.deletePerson(id)
+  _deletePerson(id)
     .then((person) => {
       res.json({ data: person, status: 'success' });
     })
@@ -36,7 +42,7 @@ const createPerson = (req, res, next) => {
     name: body.name,
     number: body.number,
   };
-  PersonService.createPerson(person)
+  _createPerson(person)
     .then((savedPerson) => {
       res.json({ data: savedPerson, status: 'success' });
     })
@@ -50,7 +56,7 @@ const updatePerson = (req, res, next) => {
     name: body.name,
     number: body.number,
   };
-  PersonService.updatePerson(id, person)
+  _updatePerson(id, person)
     .then((updatedPerson) => {
       res.json({ data: updatedPerson, status: 'success' });
     })
@@ -61,7 +67,7 @@ const getInfo = (req, res, next) => {
   const date = new Date();
   const time = date.toLocaleTimeString();
   const dateString = date.toDateString();
-  PersonService.getPersons()
+  _getPersons()
     .then((persons) => {
       res.send(
         `
@@ -73,7 +79,7 @@ const getInfo = (req, res, next) => {
     .catch((error) => next(error));
 };
 
-export default {
+module.exports = {
   getPersons,
   getPersonById,
   deletePerson,

@@ -1,30 +1,21 @@
-import Person from '../models/person.js';
+const Person = require('../models/person');
 
-const getPersons = () => {
-  return Person.find({});
-};
+const getPersons = () => Person.find({});
 
-const getPersonById = (id) => {
-  return Person.findById(id);
-};
+const getPersonById = (id) => Person.findById(id);
 
-const deletePerson = (id) => {
-  return Person.findByIdAndDelete(id);
-};
+const deletePerson = (id) => Person.findByIdAndDelete(id);
 
-const createPerson = (person) => {
-  return Person.create(person);
-};
+const createPerson = (person) => Person.create(person);
 
-const updatePerson = (id, person) => {
-  return Person.findByIdAndUpdate(id, person, {
+const updatePerson = (id, person) =>
+  Person.findByIdAndUpdate(id, person, {
     new: true,
     runValidators: true,
     context: 'query',
   });
-};
 
-export default {
+module.exports = {
   getPersons,
   getPersonById,
   deletePerson,

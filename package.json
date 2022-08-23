@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Part 3 of the Fullstack course",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
@@ -32,6 +31,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^8.22.0",
     "nodemon": "^2.0.19"
   }
 }
